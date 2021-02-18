@@ -29,10 +29,10 @@ func main() {
 	}
 	fmt.Println(val)
 
-    err = dvisit.Set(&test, "Key", "new key")
-    if err != nil {
-        panic(err)
-    }
+	err = dvisit.Set(&test, "Key", "new key")
+	if err != nil {
+		panic(err)
+	}
 	key, err = dvisit.Get(test, "Key")
 	if err != nil {
 		panic(err)
