@@ -17,12 +17,14 @@ func (this *node) SetInternal(str string) {
 }
 
 type Test struct {
-	Array  [5]int
-	Slice  []string
-	Map    map[string]string
-	Struct node
-	Ptr    *node
-	Key    string
+	Array       [5]int
+	Slice       []string
+	Map         map[string]string
+	Struct      node
+	Ptr         *node
+	Key         string
+	Interface   interface{}
+	Interface02 interface{}
 }
 
 func getTestData() Test {
@@ -38,7 +40,9 @@ func getTestData() Test {
 			Key:   "ptrKey",
 			Value: "ptrValue",
 		},
-		Key: "test.Key",
+		Key:         "test.Key",
+		Interface:   map[string]string{"hello": "world"},
+		Interface02: "interface02",
 	}
 	test.Struct.SetInternal("internal")
 	test.Ptr.SetInternal("ptrInternal")
@@ -63,6 +67,9 @@ func TestGet(t *testing.T) {
 		item{Path: "Map.key1", Val: test.Map["key1"], IsError: false},
 		item{Path: "Map.key3", IsError: true},
 		item{Path: "Key", Val: test.Key, IsError: false},
+		item{Path: "Interface.hello", Val: "world", IsError: false},
+		item{Path: "Interface.world", IsError: true},
+		item{Path: "Interface02", Val: "interface02", IsError: false},
 	}
 
 	for k, v := range tests {
@@ -95,6 +102,9 @@ func TestSet(t *testing.T) {
 		item{Path: "Map.key1", Val: "test.map.key1", IsError: false},
 		item{Path: "Map.key3", Val: "test.map,key3", IsError: false},
 		item{Path: "Key", Val: "test.key", IsError: false},
+		item{Path: "Interface.hello", Val: "test.Interface.hello", IsError: false},
+		item{Path: "Interface.world", Val: "test.Interface.world", IsError: false},
+		item{Path: "Interface02", Val: "test.Interface02", IsError: false},
 	}
 	for k, v := range tests {
 		test := getTestData()

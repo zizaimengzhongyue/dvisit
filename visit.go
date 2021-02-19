@@ -92,7 +92,7 @@ func Set(data interface{}, path string, value interface{}) error {
 
 func set(data reflect.Value, paths []string, v reflect.Value, path string) error {
 	if len(paths) == 0 {
-		if data.CanSet() && data.Kind() == v.Kind() {
+		if data.CanSet() && (data.Kind() == v.Kind() || data.Kind() == reflect.Interface) {
 			data.Set(v)
 			return nil
 		}
@@ -108,6 +108,8 @@ func set(data reflect.Value, paths []string, v reflect.Value, path string) error
 		fallthrough
 	case reflect.Slice:
 		return setArray(data, paths, v, path)
+	case reflect.Interface:
+		fallthrough
 	case reflect.Ptr:
 		elem := data.Elem()
 		return set(elem, paths, v, path)
