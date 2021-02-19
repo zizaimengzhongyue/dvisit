@@ -25,6 +25,7 @@ type Test struct {
 	Key         string
 	Interface   interface{}
 	Interface02 interface{}
+	Interface03 map[string]interface{}
 }
 
 func getTestData() Test {
@@ -43,6 +44,7 @@ func getTestData() Test {
 		Key:         "test.Key",
 		Interface:   map[string]string{"hello": "world"},
 		Interface02: "interface02",
+		Interface03: map[string]interface{}{"interface03_key": "interface03_value"},
 	}
 	test.Struct.SetInternal("internal")
 	test.Ptr.SetInternal("ptrInternal")
@@ -70,6 +72,7 @@ func TestGet(t *testing.T) {
 		item{Path: "Interface.hello", Val: "world", IsError: false},
 		item{Path: "Interface.world", IsError: true},
 		item{Path: "Interface02", Val: "interface02", IsError: false},
+		item{Path: "Interface03.interface03_key", Val: "interface03_value", IsError: false},
 	}
 
 	for k, v := range tests {
@@ -105,6 +108,7 @@ func TestSet(t *testing.T) {
 		item{Path: "Interface.hello", Val: "test.Interface.hello", IsError: false},
 		item{Path: "Interface.world", Val: "test.Interface.world", IsError: false},
 		item{Path: "Interface02", Val: "test.Interface02", IsError: false},
+		item{Path: "Interface03.interface03_key", Val: "test.Interface03.Value", IsError: false},
 	}
 	for k, v := range tests {
 		test := getTestData()

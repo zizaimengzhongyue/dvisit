@@ -133,7 +133,7 @@ func setMap(data reflect.Value, paths []string, v reflect.Value, path string) er
 	if len(paths) == 1 {
 		k := reflect.ValueOf(paths[0])
 		typK, typV := data.Type().Key(), data.Type().Elem()
-		if typK.Kind() == k.Kind() && typV.Kind() == v.Kind() {
+		if typK.Kind() == k.Kind() && (typV.Kind() == v.Kind() || typV.Kind() == reflect.Interface) {
 			data.SetMapIndex(k, v)
 			return nil
 		}
