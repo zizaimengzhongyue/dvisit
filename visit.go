@@ -21,6 +21,9 @@ func Get(data interface{}, path string) (interface{}, error) {
 }
 
 func get(data reflect.Value, paths []string, path string) (interface{}, error) {
+	if !data.IsValid() {
+		return nil, fmt.Errorf(errorData, path)
+	}
 	if len(paths) == 0 {
 		if data.CanInterface() {
 			return data.Interface(), nil
